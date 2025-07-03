@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SpiffyCleaners</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top px-3">
+  <a class="navbar-brand cursive" href="#hero">SpiffyCleaners</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="#hero">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#why">Why Us</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#services">Services</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#contact">Contact</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+ <section class="hero" id="hero">
+  <div>
+    <h1>Fresh Spaces, Happy Faces</h1>
+    <p class="lead">Professional home and office cleaning services at your fingertips.</p>
+    <button id="bookNowBtn">Book Now</button>
+  </div>
+</section>
+<section id="bookingFormSection" style="display:none; margin: 2rem auto; max-width: 700px;">
+  <form id="bookingForm" action="{{ url_for('main.submit_booking') }}" method="POST" novalidate>
+    <div class="card bg-dark text-white p-3">
+      <table class="table table-borderless text-white mb-0">
+        <tr>
+          <th><label for="name">Name</label></th>
+          <td>
+            <input type="text" id="name" name="name" class="form-control" required>
+            <div class="invalid-feedback">Please enter your name.</div>
+          </td>
+        </tr>
+        <tr>
+          <th><label for="address">Address</label></th>
+          <td>
+            <input type="text" id="address" name="address" class="form-control" required>
+            <div class="invalid-feedback">Please enter your address.</div>
+          </td>
+        </tr>
+        <tr>
+          <th><label for="phone">Contact</label></th>
+          <td>
+            <input type="tel" id="phone" name="phone" class="form-control" required pattern="[0-9]{10,15}">
+            <div class="invalid-feedback">Please enter a valid phone number.</div>
+          </td>
+        </tr>
+        <tr>
+          <th><label for="service_type">Service Type</label></th>
+          <td>
+            <select id="service_type" name="service_type" class="form-select" required>
+              <option value="">Select Service</option>
+              <option value="House Cleaning">House Cleaning</option>
+              <option value="Sofa Cleaning">Sofa Cleaning</option>
+              <option value="Carpet Cleaning">Carpet Cleaning</option>
+              <option value="General Washing">General Washing</option>
+            </select>
+            <div class="invalid-feedback">Please select a service type.</div>
+          </td>
+        </tr>
+        <tr>
+          <th><label for="date">Scheduled Date</label></th>
+          <td>
+            <input type="date" id="date" name="date" class="form-control" required>
+            <div class="invalid-feedback">Please select a date.</div>
+          </td>
+        </tr>
+        <tr>
+          <th><label for="time">Time</label></th>
+          <td>
+            <input type="time" id="time" name="time" class="form-control" required>
+            <div class="invalid-feedback">Please select a time.</div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="text-center">
+            <button type="submit" class="btn btn-light">Submit Booking</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </form>
+</section>
+
+<!-- Why Choose Us Section -->
+<section id="why" class="why-section py-5">
+  <div class="container">
+    <h2 class="why-heading text-center mb-4">Why Choose Us</h2>
+
+    <div class="row align-items-center mb-5">
+      <!-- Company Intro (Left) -->
+      <div class="col-md-7">
+        <p class="lead">
+          SpiffyCleaners was born from a passion to make homes and offices sparkle with joy and freshness. Founded by <strong>Jasmine</strong>, a detail-oriented professional with a love for organization and hygiene, the company was built to bring reliable, trustworthy, and professional cleaning services to your doorstep.
+        </p>
+        <p>
+          Whether it’s a small apartment or a large workspace, our goal is simple — to leave every space we touch cleaner, safer, and happier. Jasmine leads a dedicated team trained in modern cleaning techniques and customer care, ensuring each client enjoys a premium experience.
+        </p>
+      </div>
+
+      <!-- Founder Image (Right) -->
+      <div class="col-md-5 text-center mt-4 mt-md-0">
+        <img src="{{ url_for('static', filename='images/jasmine.jpg') }}" alt="Founder Jasmine" class="img-fluid founder-img rounded shadow">
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="why-card animate-on-scroll p-4 h-100 text-center">
+          <i class="bi bi-shield-check display-4 mb-3"></i>
+          <h4>Trusted Cleaners</h4>
+          <p>Our staff is thoroughly vetted, trained, and committed to delivering consistent, top-notch service every time.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="why-card animate-on-scroll p-4 h-100 text-center">
+          <i class="bi bi-life-preserver display-4 mb-3"></i>
+          <h4>Eco-Friendly Products</h4>
+          <p>We care about your health and the planet. That’s why we use safe, non-toxic, and biodegradable cleaning supplies.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="why-card animate-on-scroll p-4 h-100 text-center">
+          <i class="bi bi-calendar-check display-4 mb-3"></i>
+          <h4>Flexible Scheduling</h4>
+          <p>We clean when it’s convenient for you. Weekends, early mornings, or evenings — we’re here when you need us.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="why-card animate-on-scroll p-4 h-100 text-center">
+          <i class="bi bi-cash-stack display-4 mb-3"></i>
+          <h4>Affordable Rates</h4>
+          <p>Top-tier service doesn’t have to break the bank. Our pricing is transparent, fair, and competitive.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="why-card animate-on-scroll p-4 h-100 text-center">
+          <i class="bi bi-lightning-charge display-4 mb-3"></i>
+          <h4>Quick Response</h4>
+          <p>Need urgent cleaning? No problem. Our team is responsive and ready to help on short notice.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="why-card animate-on-scroll p-4 h-100 text-center">
+          <i class="bi bi-emoji-smile display-4 mb-3"></i>
+          <h4>Customer Satisfaction</h4>
+          <p>Your happiness is our priority. We listen, we care, and we always strive to exceed expectations.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!--Service section -->
+<section id="services" class="services-section py-5">
+  <div class="container">
+    <h2 class="section-heading text-center mb-5">Our Services</h2>
+    <div class="row g-4">
+
+      <div class="col-md-4">
+        <div class="service-card text-center p-4 h-100 shadow rounded animate-on-scroll">
+          <i class="bi bi-house-fill display-4 mb-3 service-icon"></i>
+          <h4>House Cleaning</h4>
+          <p>Comprehensive cleaning for homes, from kitchens to bathrooms, leaving every corner spotless.</p>
+          <button class="btn btn-primary book-btn" data-service="House Cleaning">Book This Service</button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="service-card text-center p-4 h-100 shadow rounded animate-on-scroll">
+          <i class="bi bi-building display-4 mb-3 service-icon"></i>
+          <h4>Office Cleaning</h4>
+          <p>Professional cleaning services for office spaces to keep your workplace fresh and healthy.</p>
+          <button class="btn btn-primary book-btn" data-service="Office Cleaning">Book This Service</button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="service-card text-center p-4 h-100 shadow rounded animate-on-scroll">
+          <i class="bi bi-life-preserver display-4 mb-3 service-icon"></i>
+          <h4>Sofa Cleaning</h4>
+          <p>Specialized sofa and upholstery cleaning to remove stains and odors effectively.</p>
+          <button class="btn btn-primary book-btn" data-service="Sofa Cleaning">Book This Service</button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="service-card text-center p-4 h-100 shadow rounded animate-on-scroll">
+          <i class="bi bi-bucket-fill display-4 mb-3 service-icon"></i>
+          <h4>General Cleaning</h4>
+          <p>Comprehensive general cleaning to keep your spaces tidy and hygienic regularly.</p>
+          <button class="btn btn-primary book-btn" data-service="General Cleaning">Book This Service</button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="service-card text-center p-4 h-100 shadow rounded animate-on-scroll">
+          <i class="bi bi-people-fill display-4 mb-3 service-icon"></i>
+          <h4>Carpet Cleaning</h4>
+          <p>Deep cleaning for carpets to restore freshness and remove embedded dirt.</p>
+          <button class="btn btn-primary book-btn" data-service="Carpet Cleaning">Book This Service</button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="service-card text-center p-4 h-100 shadow rounded animate-on-scroll">
+          <i class="bi bi-droplet-fill display-4 mb-3 service-icon"></i>
+          <h4>Window Cleaning</h4>
+          <p>Crystal-clear window cleaning services for homes and commercial buildings.</p>
+          <button class="btn btn-primary book-btn" data-service="Window Cleaning">Book This Service</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- Booking Form Section (place this AFTER the services section) -->
+<section id="booking-section" class="py-5">
+  <div class="container">
+    <!-- This is what JS is trying to find -->
+    <div id="bookingFormContainer" class="collapse">
+      <form id="bookingForm"  action="{{ url_for('main.submit_booking') }}"  class="bg-dark text-white p-4 rounded shadow">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" name="name" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="contact">Contact</label>
+            <input type="text" class="form-control" name="contact" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="address">Address</label>
+            <input type="text" class="form-control" name="address" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="service_type">Service Type</label>
+            <select name="service_type" class="form-control" required>
+              <option value="" disabled selected>Select a service</option>
+              <option value="House Cleaning">House Cleaning</option>
+              <option value="Office Cleaning">Office Cleaning</option>
+              <option value="Sofa Cleaning">Sofa Cleaning</option>
+              <option value="General Cleaning">General Cleaning</option>
+              <option value="Carpet Cleaning">Carpet Cleaning</option>
+              <option value="Window Cleaning">Window Cleaning</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="date">Scheduled Date</label>
+            <input type="date" class="form-control" name="date" required>
+          </div>
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-light mt-3">Submit Booking</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<!-- Transitional Banner -->
+<section class="banner-highlight d-flex align-items-center text-white text-center">
+  <div class="container">
+    <h2 class="display-5 fw-bold mb-3">Experience Clean Like Never Before</h2>
+    <p class="lead">Where sparkle meets satisfaction — every single time.</p>
+    <a href="{{ url_for('main.book_page') }}" class="btn btn-outline-light btn-lg mt-3">Book Now</a>
+  </div>
+</section>
+
+<section id="contact" class="contact-section py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-5" style="font-family: 'Pacifico', cursive; font-weight: bold; color: #fd0d99; text-decoration: underline;">
+      Get in Touch
+    </h2>
+
+    <div class="row">
+      <!-- Contact Info -->
+      <div class="col-md-5 mb-4">
+        <h4>Contact Information</h4>
+        <p><strong>Address:</strong> Mombasa, Kenya</p>
+        <p><strong>Phone:</strong> +254 748 887 429</p>
+        <p><strong>Email:</strong> info@spiffycleaners.com</p>
+        <p>
+          <strong>Follow us:</strong><br>
+          <a href="#" class="me-3"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="me-3"><i class="bi bi-twitter"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+        </p>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="col-md-7">
+        <form method="POST" action="{{ url_for('main.contact') }}" novalidate>
+          {{ form.hidden_tag() }}
+
+          <div class="mb-3">
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control", placeholder="Your Name") }}
+            {% if form.name.errors %}
+              <div class="text-danger">{{ form.name.errors[0] }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", placeholder="Your Email") }}
+            {% if form.email.errors %}
+              <div class="text-danger">{{ form.email.errors[0] }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.subject.label(class="form-label") }}
+            {{ form.subject(class="form-control", placeholder="Subject") }}
+            {% if form.subject.errors %}
+              <div class="text-danger">{{ form.subject.errors[0] }}</div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.message.label(class="form-label") }}
+            {{ form.message(class="form-control", rows="5", placeholder="Your Message") }}
+            {% if form.message.errors %}
+              <div class="text-danger">{{ form.message.errors[0] }}</div>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer bg-dark text-white pt-5 pb-3">
+  <div class="container">
+    <div class="row">
+
+      <!-- About -->
+      <div class="col-md-4 mb-4">
+        <h5 class="mb-3" style="font-family: 'Pacifico', cursive; color: #fd0d99;">SpiffyCleaners</h5>
+        <p>We bring sparkle to your spaces with reliable, eco-friendly, and professional cleaning services — every time, everywhere.</p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-4 mb-4">
+        <h5 class="mb-3">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="#hero" class="text-white text-decoration-none">Home</a></li>
+          <li><a href="#why" class="text-white text-decoration-none">Why Us</a></li>
+          <li><a href="#services" class="text-white text-decoration-none">Services</a></li>
+          <li><a href="#contact" class="text-white text-decoration-none">Contact</a></li>
+         <li><a href="{{ url_for('main.book_page') }}" class="text-white text-decoration-none">Book Now</a></li>
+        </ul>
+       <small>
+          <a href="{{ url_for('auth.login') }}" class="text-white">Staff Login</a>
+       </small>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-4 mb-4">
+        <h5 class="mb-3">Contact</h5>
+        <p><i class="bi bi-geo-alt-fill me-2"></i> Mombasa, Kenya</p>
+        <p><i class="bi bi-envelope-fill me-2"></i> <a href="mailto:info@spiffycleaners.com" class="text-white text-decoration-none">info@spiffycleaners.com</a></p>
+        <p><i class="bi bi-telephone-fill me-2"></i><a href="tel:+254748887429" class="text-white text-decoration-none">+254 748 887 429</a></p>
+        <div class="mt-2">
+         <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+         <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+         <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+         <a href="https://wa.me/254748887429" target="_blank" class="text-white me-3"><i class="bi bi-whatsapp"></i></a>
+       </div>
+      </div>
+
+    </div>
+
+    <hr class="border-light">
+    <div class="text-center small">&copy; {{ current_year }} SpiffyCleaners. All Rights Reserved.</div>
+  </div>
+</footer>
+
+<a href="#hero" id="backToTop" class="btn btn-primary shadow">↑ Top</a>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

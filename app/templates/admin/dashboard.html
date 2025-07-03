@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard | SpiffyCleaners</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .status-pending { color: #856404; background-color: #fff3cd; padding: 4px 10px; border-radius: 4px; }
+    .status-completed { color: #155724; background-color: #d4edda; padding: 4px 10px; border-radius: 4px; }
+    .status-denied { color: #721c24; background-color: #f8d7da; padding: 4px 10px; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-light">
+  <div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Admin Dashboard</h2>
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-danger">Logout</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Bookings Section -->
+    <div class="card mb-5">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Service Requests</h5>
+        <input type="text" class="form-control w-50" id="searchInput" placeholder="Search by name, phone, or service..." />
+      </div>
+      <div class="card-body table-responsive">
+        <table class="table table-hover" id="bookingsTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Service</th>
+              <th>Address</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for booking in bookings %}
+              <tr>
+                <td>{{ booking.name }}</td>
+                <td>{{ booking.phone }}</td>
+                <td>{{ booking.service_type }}</td>
+                <td>{{ booking.address }}</td>
+                <td>{{ booking.date }} {{ booking.time }}</td>
+                <td>
+                  {% if booking.status == 'Pending' %}
+                    <span class="status-pending">Pending</span>
+                  {% elif booking.status == 'Done' %}
+                    <span class="status-completed">Completed</span>
+                  {% elif booking.status == 'Denied' %}
+                    <span class="status-denied">Denied</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <form action="{{ url_for('admin.mark_done', id=booking.id) }}" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-success btn-sm">Mark Done</button>
+                  </form>
+                  <form action="{{ url_for('admin.mark_denied', id=booking.id) }}" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-warning btn-sm">Deny</button>
+                  </form>
+                  <form action="{{ url_for('admin.delete_booking', id=booking.id) }}" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Messages Section -->
+    <div class="card">
+      <div class="card-header">
+        <h5>Messages</h5>
+      </div>
+      <div class="card-body">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="border rounded p-3 mb-3">
+              <p><strong>{{ message.name }}</strong> ({{ message.email }})</p>
+              <p>{{ message.message }}</p>
+              <p class="text-muted"><small>{{ message.timestamp and message.timestamp.strftime('%Y-%m-%d %H:%M') }}</small></p>
+              <form action="{{ url_for('admin.delete_message', id=message.id) }}" method="POST">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+              </form>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>No messages found.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const tableRows = document.querySelectorAll('#bookingsTable tbody tr');
+
+    searchInput.addEventListener('keyup', function () {
+      const query = this.value.toLowerCase();
+      tableRows.forEach(row => {
+        const name = row.children[0].textContent.toLowerCase();
+        const phone = row.children[1].textContent.toLowerCase();
+        const service = row.children[2].textContent.toLowerCase();
+        row.style.display = name.includes(query) || phone.includes(query) || service.includes(query) ? '' : 'none';
+      });
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
