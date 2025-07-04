@@ -62,19 +62,23 @@ def submit_booking():
         flash("All fields are required or invalid.", "danger")
         return redirect(url_for('main.book_page'))
 
-@main.route('/contact', methods=['GET', 'POST'], endpoint='contact')
+@main.route('/contact', methods=['GET', 'POST'])
 def contact():
     form = ContactForm()
     if form.validate_on_submit():
-        new_message = ContactMessage(
-            name=form.name.data,
-            email=form.email.data,
-            subject=form.subject.data,
-            message=form.message.data
-        )
-        db.session.add(new_message)
-        db.session.commit()
-        flash('Message sent successfully!', 'success')
+        try:
+            new_message = ContactMessage(
+                name=form.name.data,
+                email=form.email.data,
+                subject=form.subject.data,
+                message=form.message.data
+            )
+            db.session.add(new_message)
+            db.session.commit()
+            flash('Message sent successfully!', 'success')
+        except Exception as e:
+            print(f"⚠️ Contact form submission error: {e}")
+            flash('Something went wrong while sending your message.', 'danger')
         return redirect(url_for('main.home'))
     elif request.method == 'POST':
         flash('All fields are required.', 'danger')
